@@ -13,4 +13,4 @@ Simulação de E-commerce mobile com Arquitetura Flux(Redux & Redux-Saga)
 
 
 ## Resultado
-<img width="200" alt="portfolio_view" src="https://github.com/denisonfer/rocketshoes-mobile/blob/master/.github/rocketshoes-mobile.gif">
+<img width="200" alt="preview app" src="https://github.com/denisonfer/rocketshoes-mobile/blob/master/.github/rocketshoes-mobile.gif">
