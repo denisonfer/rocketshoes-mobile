@@ -1,7 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/background';
 import * as CartActions from '../../store/modules/carrinho/actions';
@@ -29,19 +28,32 @@ import {
   EmptyText,
 } from './styles';
 
-function Carrinho({
-  navigation,
-  products,
-  total,
-  removeFromCart,
-  updateAmountRequest,
-}) {
+export default function Carrinho() {
+  const dispatch = useDispatch();
+
+  const products = useSelector(state =>
+    state.carrinho.produtos.map(product => ({
+      ...product,
+      subtotal: valorFormatado(product.price * product.amount),
+      priceFormatted: valorFormatado(product.price),
+    }))
+  );
+
+  const total = useSelector(state =>
+    valorFormatado(
+      state.carrinho.produtos.reduce(
+        (qtdTotal, product) => qtdTotal + product.price * product.amount,
+        0
+      )
+    )
+  );
+
   function decrement(product) {
-    updateAmountRequest(product.id, product.amount - 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
   }
 
   function increment(product) {
-    updateAmountRequest(product.id, product.amount + 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
   }
 
   return (
@@ -58,7 +70,11 @@ function Carrinho({
                       <ProductTitle>{product.title}</ProductTitle>
                       <ProductPrice>{product.priceFormatted}</ProductPrice>
                     </ProductDetails>
-                    <ProductDelete onPress={() => removeFromCart(product.id)}>
+                    <ProductDelete
+                      onPress={() =>
+                        dispatch(CartActions.removeFromCart(product.id))
+                      }
+                    >
                       <Icon name="delete-forever" size={24} color="#7159c1" />
                     </ProductDelete>
                   </ProductInfo>
@@ -101,22 +117,3 @@ function Carrinho({
     </Background>
   );
 }
-
-const mapStateToProps = state => ({
-  products: state.carrinho.produtos.map(product => ({
-    ...product,
-    subtotal: valorFormatado(product.price * product.amount),
-    priceFormatted: valorFormatado(product.price),
-  })),
-  total: valorFormatado(
-    state.carrinho.produtos.reduce(
-      (total, product) => total + product.price * product.amount,
-      0
-    )
-  ),
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Carrinho);

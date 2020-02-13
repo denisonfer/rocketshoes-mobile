@@ -1,11 +1,13 @@
 import { Foundation } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Container, BoxHeader, Logo, Carrinho, ItemCount } from './styles';
 
-function Header({ navigation, QtdCarrinho }) {
+export default function Header({ navigation }) {
+  const QtdCarrinho = useSelector(state => state.carrinho.produtos.length);
+
   return (
     <Container>
       <BoxHeader>
@@ -21,8 +23,3 @@ function Header({ navigation, QtdCarrinho }) {
     </Container>
   );
 }
-const mapStateToProps = state => ({
-  QtdCarrinho: state.carrinho.produtos.length,
-});
-
-export default connect(mapStateToProps)(Header);

@@ -15,8 +15,10 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'prettier', 'import-helpers'],
+  plugins: ['react', 'prettier', 'import-helpers', 'react-hooks'],
   rules: {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'prettier/prettier': 'error',
     'jsx-a11y/control-has-associated-label': 'off',
     'no-console': 'off',
